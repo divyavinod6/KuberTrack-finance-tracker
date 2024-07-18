@@ -1,9 +1,16 @@
 import React from 'react';
 import './style.css';
+
 function Header() {
+  function logoutFnc() {
+    alert('Logout!');
+  }
   return (
     <div className="navbar">
-      <p style={{ color: 'var(--white', fontWeight: 600 }}>KuberTrack</p>
+      <p className="logo">KuberTrack</p>
+      <p className="logo link" onClick={logoutFnc}>
+        Logout
+      </p>
     </div>
   );
 }
