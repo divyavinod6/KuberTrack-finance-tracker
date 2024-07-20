@@ -2,9 +2,14 @@ import React, { useState } from 'react';
 import './style.css';
 import Input from '../Input';
 import Button from '../Button';
-import { auth } from '../../firebase';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth, db } from '../../firebase';
+import { useNavigate } from 'react-router-dom';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
 import { toast } from 'react-toastify';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
 function SignupSigninComponent() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -12,6 +17,7 @@ function SignupSigninComponent() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loginForm, setLoginForm] = useState(false);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   function signupWithEmail() {
     setLoading(true);
@@ -40,10 +46,11 @@ function SignupSigninComponent() {
             setPassword('');
             setConfirmPassword('');
             createDoc(user);
+            navigate('/dashboard');
             // Create a document with user id as following id
           })
           .catch((error) => {
-            const errorCode = error.code;
+            // const errorCode = error.code;
             const errorMessage = error.message;
             toast.error(errorMessage);
             setLoading(false);
@@ -60,10 +67,53 @@ function SignupSigninComponent() {
   function loginUsingEmail() {
     console.log('Email: ', email);
     console.log('password: ', password);
+    setLoading(true);
+    if (email !== '' && password !== '') {
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          toast.success('User Logged In!');
+          console.log('User logged in:', user);
+          setLoading(false);
+          navigate('/dashboard');
+          // ...
+        })
+        .catch((error) => {
+          const errorMessage = error.message;
+          toast.error(errorMessage);
+          setLoading(false);
+        });
+    } else {
+      toast.error('All fields are mandatory');
+      setLoading(false);
+    }
   }
-  function createDoc(user) {
+  async function createDoc(user) {
     // make sure doc with same uid doesnt exist
     // create a doc.
+    setLoading(true);
+    if (!user) return;
+    const userRef = doc(db, 'users', user.uid);
+    const userData = await getDoc(userRef);
+    if (!userData.exists()) {
+      try {
+        await setDoc(doc(db, 'users', user.uid), {
+          name: user.displayName ? user.displayName : name,
+          email: user.email,
+          photoURL: user.photoURL ? user.photoURL : '',
+          createdAt: new Date(),
+        });
+        toast.success('Doc Created');
+        setLoading(false);
+      } catch (e) {
+        toast.error(e.message);
+        setLoading(false);
+      }
+    } else {
+      toast.error('Doc already exists');
+      setLoading(false);
+    }
   }
   return (
     <>
