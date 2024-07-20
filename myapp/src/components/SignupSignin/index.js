@@ -5,11 +5,14 @@ import Button from '../Button';
 import { auth, db } from '../../firebase';
 import { useNavigate } from 'react-router-dom';
 import {
+  signInWithPopup,
+  GoogleAuthProvider,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 import { toast } from 'react-toastify';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
+
 function SignupSigninComponent() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -18,6 +21,11 @@ function SignupSigninComponent() {
   const [loginForm, setLoginForm] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  const provider = new GoogleAuthProvider();
+  provider.setCustomParameters({
+    login_hint: 'user@example.com',
+  });
 
   function signupWithEmail() {
     setLoading(true);
@@ -111,7 +119,37 @@ function SignupSigninComponent() {
         setLoading(false);
       }
     } else {
-      toast.error('Doc already exists');
+      // toast.error('Doc already exists');
+      setLoading(false);
+    }
+  }
+
+  function googleAuth() {
+    setLoading(true);
+    try {
+      signInWithPopup(auth, provider)
+        .then((result) => {
+          // This gives you a Google Access Token. You can use it to access the Google API.
+          const credential = GoogleAuthProvider.credentialFromResult(result);
+          const token = credential.accessToken;
+          // The signed-in user info.
+          const user = result.user;
+          console.log('user: ', user);
+          createDoc(user);
+          setLoading(false);
+          navigate('/dashboard');
+          toast.success('user Authenticated');
+          // IdP data available using getAdditionalUserInfo(result)
+          // ...
+        })
+        .catch((error) => {
+          // Handle Errors here.
+          setLoading(false);
+          const errorMessage = error.message;
+          toast.error(error.message);
+        });
+    } catch (error) {
+      toast.error(error.message);
       setLoading(false);
     }
   }
@@ -144,6 +182,7 @@ function SignupSigninComponent() {
             />
             <p className="p-login">or</p>
             <Button
+              onClick={googleAuth}
               disabled={loading}
               text={loading ? 'Loading...' : 'Login using Google'}
               blue={true}
@@ -200,6 +239,7 @@ function SignupSigninComponent() {
             />
             <p className="p-login">or</p>
             <Button
+              onClick={googleAuth}
               disabled={loading}
               text={loading ? 'Loading...' : 'SignUp using Google'}
               blue={true}
