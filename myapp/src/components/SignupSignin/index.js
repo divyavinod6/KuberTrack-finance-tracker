@@ -13,6 +13,7 @@ import {
 import { toast } from 'react-toastify';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 
+//
 function SignupSigninComponent() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
