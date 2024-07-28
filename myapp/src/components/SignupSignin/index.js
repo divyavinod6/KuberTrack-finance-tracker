@@ -13,7 +13,6 @@ import {
 import { toast } from 'react-toastify';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 
-//
 function SignupSigninComponent() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -135,11 +134,11 @@ function SignupSigninComponent() {
           const token = credential.accessToken;
           // The signed-in user info.
           const user = result.user;
-          console.log('user: ', user);
+          console.log('user>>>', user);
           createDoc(user);
           setLoading(false);
           navigate('/dashboard');
-          toast.success('user Authenticated');
+          toast.success('user Authenticated!');
           // IdP data available using getAdditionalUserInfo(result)
           // ...
         })
@@ -147,7 +146,7 @@ function SignupSigninComponent() {
           // Handle Errors here.
           setLoading(false);
           const errorMessage = error.message;
-          toast.error(error.message);
+          toast.error(errorMessage);
         });
     } catch (error) {
       toast.error(error.message);
