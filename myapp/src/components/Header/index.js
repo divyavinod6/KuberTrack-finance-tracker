@@ -5,6 +5,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { toast } from 'react-toastify';
+
 function Header() {
   const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ function Header() {
         .then(() => {
           toast.success('Logged Out Successfully');
           navigate('/');
-          // sign out successful
+          // sign out done successfully
         })
         .catch((error) => {
           // error happened
