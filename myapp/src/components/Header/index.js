@@ -36,7 +36,7 @@ function Header() {
 
   return (
     <div className="navbar">
-      <p className="logo">KuberTrack</p>
+      <p className="logo">KuberTrack.</p>
       {user && (
         <p className="logo link" onClick={logoutFnc}>
           Logout
