@@ -52,6 +52,19 @@ function AddExpenseModal({
         >
           <DatePicker className="custom-input" format="YYYY-MM-DD" />
         </Form.Item>
+        <Form.Item
+          style={{ fontWeight: 600 }}
+          label="Tag"
+          name="tag"
+          rules={[{ required: true, message: 'Please select a tag!' }]}
+        >
+          <Select className="custom-input">
+            <Select.Option value="food">Food</Select.Option>
+            <Select.Option value="travel">Travel</Select.Option>
+            <Select.Option value="shopping">Shopping</Select.Option>
+            <Select.Option value="other">Other</Select.Option>
+          </Select>
+        </Form.Item>
         <Form.Item>
           <Button className="btn btn-blue" type="primary" htmlType="submit">
             Add Expense
