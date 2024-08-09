@@ -10,6 +10,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import moment from 'moment';
 
 function Dashboard() {
+  const [transaction, setTransaction] = useState([]);
   const [user] = useAuthState(auth);
   const [isExpenseModalVisible, setIsExpenseModalVisible] = useState(false);
   const [isIncomeModalVisible, setIsIncomeModalVisible] = useState(false);
