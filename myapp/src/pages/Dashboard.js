@@ -15,6 +15,9 @@ function Dashboard() {
   const [user] = useAuthState(auth);
   const [isExpenseModalVisible, setIsExpenseModalVisible] = useState(false);
   const [isIncomeModalVisible, setIsIncomeModalVisible] = useState(false);
+  const [income, setIncome] = useState(0);
+  const [expense, setExpense] = useState(0);
+  const [totalBalance, setTotalBalance] = useState(0);
 
   const showExpenseModal = () => {
     setIsExpenseModalVisible(true);
@@ -43,14 +46,24 @@ function Dashboard() {
     addTransaction(newTransaction);
   };
 
-  async function addTransaction(transaction) {
+  async function addTransaction(newTransaction) {
     try {
       const docRef = await addDoc(
         collection(db, `users/${user.uid}/transaction`),
-        transaction
+        newTransaction
       );
       console.log('document written with ID: ', docRef.id);
       toast.success('Transaction Added!');
+      // Update the transaction state with the new transaction
+      setTransaction((prevTransactions) => {
+        const updatedTransactions = [...prevTransactions, newTransaction];
+        calculateBalance(updatedTransactions); // Update balance with the latest transactions
+        return updatedTransactions;
+      });
+      // let newArr = transaction;
+      // newArr.push(transaction);
+      // setTransaction(newArr);
+      // calculateBalance();
     } catch (error) {
       console.error('Error adding document: ', error);
       toast.error('Couldnt add Transaction');
@@ -58,9 +71,31 @@ function Dashboard() {
   }
   useEffect(() => {
     // GET all doc from a collection
-    fetchTransaction();
+    if (user) {
+      fetchTransaction();
+    }
   }, [user]);
 
+  useEffect(() => {
+    calculateBalance(transaction);
+  }, [transaction]);
+
+  const calculateBalance = (transaction) => {
+    let incomeTotal = 0;
+    let expensesTotal = 0;
+
+    transaction.forEach((transaction) => {
+      if (transaction.type === 'income') {
+        incomeTotal += transaction.amount;
+      } else {
+        expensesTotal += transaction.amount;
+      }
+    });
+    //
+    setIncome(incomeTotal);
+    setExpense(expensesTotal);
+    setTotalBalance(incomeTotal - expensesTotal);
+  };
   async function fetchTransaction() {
     setLoading(true);
     if (user) {
@@ -71,9 +106,11 @@ function Dashboard() {
         // doc.data() is never undefined for query doc snapshots
         transactionsArray.push(doc.data());
       });
-      setTransaction(transactionsArray);
-      console.log('Transaction value: ', transactionsArray);
-      toast.success('Transaction Fetched!');
+      if (JSON.stringify(transactionsArray) !== JSON.stringify(transaction)) {
+        setTransaction(transactionsArray);
+        console.log('Transaction value: ', transactionsArray);
+        toast.success('Transaction Fetched!');
+      }
     }
     setLoading(false);
   }
@@ -85,6 +122,9 @@ function Dashboard() {
       ) : (
         <>
           <Cards
+            income={income}
+            expense={expense}
+            totalBalance={totalBalance}
             showExpenseModal={showExpenseModal}
             showIncomeModal={showIncomeModal}
           />
