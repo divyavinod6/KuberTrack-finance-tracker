@@ -118,7 +118,7 @@ function Dashboard() {
     <div>
       <Header />
       {loading ? (
-        <p>loading...</p>
+        <p>loading....</p>
       ) : (
         <>
           <Cards
