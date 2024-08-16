@@ -3,7 +3,14 @@ import Header from '../components/Header';
 import Cards from '../components/Cards';
 import AddIncomeModal from '../components/Modals/addIncome';
 import AddExpenseModal from '../components/Modals/addExpense';
-import { addDoc, collection, query, getDocs } from 'firebase/firestore';
+import TransactionTable from '../components/TransactionTable';
+import {
+  addDoc,
+  collection,
+  query,
+  getDocs,
+  Transaction,
+} from 'firebase/firestore';
 import { toast } from 'react-toastify';
 import { auth, db } from '../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -138,6 +145,7 @@ function Dashboard() {
             handleIncomeCancel={handleIncomeCancel}
             onFinish={onFinish}
           />
+          <TransactionTable transactions={transaction} />
         </>
       )}
     </div>
