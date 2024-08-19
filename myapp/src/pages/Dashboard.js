@@ -116,7 +116,7 @@ function Dashboard() {
       if (JSON.stringify(transactionsArray) !== JSON.stringify(transaction)) {
         setTransaction(transactionsArray);
         console.log('Transaction value: ', transactionsArray);
-        toast.success('Transaction Fetched!');
+        toast.success('Transaction Fetched!!');
       }
     }
     setLoading(false);
