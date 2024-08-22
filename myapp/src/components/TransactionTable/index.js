@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Table } from 'antd';
 
 function TransactionTable({ transactions }) {
+  const [search, setSearch] = useState('');
   const columns = [
     {
       title: 'Amount',
@@ -30,7 +31,19 @@ function TransactionTable({ transactions }) {
     },
   ];
 
-  return <Table dataSource={transactions} columns={columns} />;
+  let filteredTransactions = transactions.filter((item) =>
+    item.name.toLowerCase().includes(search.toLowerCase())
+  );
+  return (
+    <>
+      <input
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        placeholder="Search by name"
+      />
+      <Table dataSource={filteredTransactions} columns={columns} />;
+    </>
+  );
 }
 
 export default TransactionTable;
