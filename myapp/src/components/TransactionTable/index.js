@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { Table } from 'antd';
+import { Select, Table } from 'antd';
 
 function TransactionTable({ transactions }) {
   const [search, setSearch] = useState('');
+  const [typeFilter, setTypeFilter] = useState('');
+  const { Option } = Select;
   const columns = [
     {
       title: 'Amount',
@@ -31,8 +33,10 @@ function TransactionTable({ transactions }) {
     },
   ];
 
-  let filteredTransactions = transactions.filter((item) =>
-    item.name.toLowerCase().includes(search.toLowerCase())
+  let filteredTransactions = transactions.filter(
+    (item) =>
+      item.name.toLowerCase().includes(search.toLowerCase()) &&
+      item.type.includes(typeFilter)
   );
   return (
     <>
@@ -41,6 +45,17 @@ function TransactionTable({ transactions }) {
         onChange={(e) => setSearch(e.target.value)}
         placeholder="Search by name"
       />
+      <Select
+        className="select-input"
+        onChange={(value) => setTypeFilter(value)}
+        value={typeFilter}
+        placeholder="Filter"
+        allowClear
+      >
+        <Option value="">All</Option>
+        <Option value="income">Income</Option>
+        <Option value="expense">Expense</Option>
+      </Select>
       <Table dataSource={filteredTransactions} columns={columns} />;
     </>
   );
