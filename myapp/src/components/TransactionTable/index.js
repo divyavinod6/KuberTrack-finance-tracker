@@ -53,8 +53,8 @@ function TransactionTable({ transactions }) {
         allowClear
       >
         <Option value="">All</Option>
-        <Option value="income">Income</Option>
-        <Option value="expense">Expense</Option>
+        <Option value="income">Income </Option>
+        <Option value="expense">Expense </Option>
       </Select>
       <Table dataSource={filteredTransactions} columns={columns} />;
     </>
