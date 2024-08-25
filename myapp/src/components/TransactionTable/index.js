@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Select, Table } from 'antd';
+import { Radio, Select, Table } from 'antd';
 
 function TransactionTable({ transactions }) {
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
+  const [sortKey, setSortKey] = useState('');
   const { Option } = Select;
   const columns = [
     {
@@ -38,6 +39,16 @@ function TransactionTable({ transactions }) {
       item.name.toLowerCase().includes(search.toLowerCase()) &&
       item.type.includes(typeFilter)
   );
+
+  let sortedTransactions = filteredTransactions.sort((a, b) => {
+    if (sortKey === 'date') {
+      return new Date(a.Date) - new Date(b.date);
+    } else if (sortKey === 'amount') {
+      return a.amount - b.amount;
+    } else {
+      return 0;
+    }
+  });
   return (
     <>
       <input
@@ -56,7 +67,16 @@ function TransactionTable({ transactions }) {
         <Option value="income">Income </Option>
         <Option value="expense">Expense </Option>
       </Select>
-      <Table dataSource={filteredTransactions} columns={columns} />;
+      <Radio.Group
+        className="input-radio"
+        onChange={(e) => setSortKey(e.target.value)}
+        value={sortKey}
+      >
+        <Radio.Button value="">No sort</Radio.Button>
+        <Radio.Button value="date">Sort by Date</Radio.Button>
+        <Radio.Button value="amount">Sort by Amount</Radio.Button>
+      </Radio.Group>
+      <Table dataSource={sortedTransactions} columns={columns} />;
     </>
   );
 }
