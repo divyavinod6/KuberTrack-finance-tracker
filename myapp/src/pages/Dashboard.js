@@ -118,6 +118,8 @@ function Dashboard() {
         console.log('Transaction value: ', transactionsArray);
         toast.success('Transaction Fetched!!');
       }
+    } else {
+      toast.error('No User');
     }
     setLoading(false);
   }
