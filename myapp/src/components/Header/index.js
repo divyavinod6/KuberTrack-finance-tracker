@@ -22,7 +22,7 @@ function Header() {
     try {
       signOut(auth)
         .then(() => {
-          toast.success('Logged Out Successfully!!');
+          toast.success('Logged Out Successfully!!!');
           navigate('/');
           // sign out done successfully
         })
