@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Radio, Select, Table } from 'antd';
+import { Flex, Radio, Select, Table } from 'antd';
 import searchImg from '../../assets/search.svg';
 
 function TransactionTable({ transactions }) {
@@ -40,6 +40,16 @@ function TransactionTable({ transactions }) {
       item.name.toLowerCase().includes(search.toLowerCase()) &&
       item.type.includes(typeFilter)
   );
+
+  function exportCSV() {
+    // var csv = unparse({
+    //   fields: ['Column 1', 'Column 2'],
+    //   data: [
+    //     ['foo', 'bar'],
+    //     ['abc', 'def'],
+    //   ],
+    // });
+  }
 
   let sortedTransactions = filteredTransactions.sort((a, b) => {
     if (sortKey === 'date') {
@@ -86,16 +96,49 @@ function TransactionTable({ transactions }) {
           <Option value="expense">Expense </Option>
         </Select>
       </div>
-      <div>
-        <Radio.Group
-          className="input-radio"
-          onChange={(e) => setSortKey(e.target.value)}
-          value={sortKey}
+      <div className="my-table">
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '1rem',
+            width: '400px',
+          }}
         >
-          <Radio.Button value="">No sort</Radio.Button>
-          <Radio.Button value="date">Sort by Date</Radio.Button>
-          <Radio.Button value="amount">Sort by Amount</Radio.Button>
-        </Radio.Group>
+          <h2> My Transactions</h2>
+          <Radio.Group
+            className="input-radio"
+            onChange={(e) => setSortKey(e.target.value)}
+            value={sortKey}
+          >
+            <Radio.Button value="">No sort</Radio.Button>
+            <Radio.Button value="date">Sort by Date</Radio.Button>
+            <Radio.Button value="amount">Sort by Amount</Radio.Button>
+          </Radio.Group>
+
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              gap: '1rem',
+              width: '400px',
+            }}
+          >
+            <button className="btn" onClick={exportCSV}>
+              Export to CSV
+            </button>
+            <label for="file-csv" className="btn btn-blue">
+              Import CSV
+            </label>
+            <input
+              id="file-csv"
+              type="file"
+              accept=".csv"
+              required
+              style={{ display: 'none' }}
+            />
+          </div>
+        </div>
         <Table dataSource={sortedTransactions} columns={columns} />;
       </div>
     </div>
