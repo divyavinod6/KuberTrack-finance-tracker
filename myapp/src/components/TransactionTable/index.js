@@ -42,13 +42,10 @@ function TransactionTable({ transactions }) {
   );
 
   function exportCSV() {
-    // var csv = unparse({
-    //   fields: ['Column 1', 'Column 2'],
-    //   data: [
-    //     ['foo', 'bar'],
-    //     ['abc', 'def'],
-    //   ],
-    // });
+    var csv = unparse({
+      fields: ['Name', 'type', 'tag', 'date', 'amount'],
+      transactions,
+    });
   }
 
   let sortedTransactions = filteredTransactions.sort((a, b) => {
