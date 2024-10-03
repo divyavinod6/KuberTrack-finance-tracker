@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Flex, Radio, Select, Table } from 'antd';
 import searchImg from '../../assets/search.svg';
+import { unparse } from 'papaparse';
 
 function TransactionTable({ transactions }) {
   const [search, setSearch] = useState('');
@@ -46,6 +47,12 @@ function TransactionTable({ transactions }) {
       fields: ['Name', 'type', 'tag', 'date', 'amount'],
       transactions,
     });
+    var data = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    var csvURL = window.URL.createObjectURL(data);
+    tempLink = document.createElement('a');
+    tempLink.href = csvURL;
+    tempLink.setAttribute('download', 'transactions.csv');
+    tempLink.click();
   }
 
   let sortedTransactions = filteredTransactions.sort((a, b) => {
