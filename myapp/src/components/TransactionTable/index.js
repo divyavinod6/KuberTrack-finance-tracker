@@ -106,9 +106,10 @@ function TransactionTable({ transactions }) {
         <div
           style={{
             display: 'flex',
-            justifyContent: 'center',
+            justifyContent: 'space-between',
             gap: '1rem',
-            width: '400px',
+            width: '100%',
+            alignItems: 'center',
           }}
         >
           <h2> My Transactions</h2>
@@ -116,8 +117,13 @@ function TransactionTable({ transactions }) {
             className="input-radio"
             onChange={(e) => setSortKey(e.target.value)}
             value={sortKey}
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
           >
-            <Radio.Button value="">No sort</Radio.Button>
+            <Radio.Button value="">No Sort</Radio.Button>
             <Radio.Button value="date">Sort by Date</Radio.Button>
             <Radio.Button value="amount">Sort by Amount</Radio.Button>
           </Radio.Group>
@@ -125,7 +131,7 @@ function TransactionTable({ transactions }) {
           <div
             style={{
               display: 'flex',
-              justifyContent: 'center',
+              alignItems: 'center',
               gap: '1rem',
               width: '400px',
             }}
