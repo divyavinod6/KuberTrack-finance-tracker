@@ -98,8 +98,8 @@ function TransactionTable({ transactions }) {
           allowClear
         >
           <Option value="">All</Option>
-          <Option value="income">Income </Option>
-          <Option value="expense">Expense </Option>
+          <Option value="income">Income</Option>
+          <Option value="expense">Expense</Option>
         </Select>
       </div>
       <div className="my-table">
@@ -123,7 +123,7 @@ function TransactionTable({ transactions }) {
               alignItems: 'center',
             }}
           >
-            <Radio.Button value="">No Sort</Radio.Button>
+            <Radio.Button value="">No Sorting</Radio.Button>
             <Radio.Button value="date">Sort by Date</Radio.Button>
             <Radio.Button value="amount">Sort by Amount</Radio.Button>
           </Radio.Group>
