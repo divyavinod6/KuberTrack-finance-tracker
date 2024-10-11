@@ -67,7 +67,7 @@ function TransactionTable({ transactions }) {
     }
   });
   return (
-    <div style={{ width: '97vw', padding: '0rem 2rem' }}>
+    <div style={{ width: '97%', padding: '0rem 2rem' }}>
       <div
         style={{
           display: 'flex',
@@ -140,7 +140,7 @@ function TransactionTable({ transactions }) {
               Export to CSV
             </button>
             <label for="file-csv" className="btn btn-blue">
-              Import CSV
+              Import from CSV
             </label>
             <input
               id="file-csv"
