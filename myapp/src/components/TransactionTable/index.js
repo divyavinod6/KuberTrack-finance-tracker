@@ -45,7 +45,7 @@ function TransactionTable({ transactions }) {
   function exportCSV() {
     var csv = unparse({
       fields: ['Name', 'type', 'tag', 'date', 'amount'],
-      transactions,
+      data: transactions,
     });
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
