@@ -99,7 +99,7 @@ function TransactionTable({ transactions }) {
         >
           <Option value="">All</Option>
           <Option value="income">Income</Option>
-          <Option value="expense">Expense</Option>
+          <Option value="expense">Expenses</Option>
         </Select>
       </div>
       <div className="my-table">
