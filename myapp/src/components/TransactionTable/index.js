@@ -43,9 +43,14 @@ function TransactionTable({ transactions }) {
   );
 
   function exportCSV() {
+    const formattedData = transactions.map((item) => ({
+      ...item,
+      date: new Date(item.date).toISOString().split('T')[0], // Formatting the date as YYYY-MM-DD
+    }));
+
     var csv = unparse({
       fields: ['Name', 'type', 'tag', 'date', 'amount'],
-      data: transactions,
+      data: formattedData,
     });
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
