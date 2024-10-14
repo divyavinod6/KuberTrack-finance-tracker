@@ -49,7 +49,7 @@ function TransactionTable({ transactions }) {
     }));
 
     var csv = unparse({
-      fields: ['Name', 'type', 'tag', 'date', 'amount'],
+      fields: ['name', 'type', 'tag', 'date', 'amount'],
       data: formattedData,
     });
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
