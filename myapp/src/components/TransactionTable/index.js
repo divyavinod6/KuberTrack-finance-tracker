@@ -45,7 +45,7 @@ function TransactionTable({ transactions }) {
   function exportCSV() {
     const formattedData = transactions.map((item) => ({
       ...item,
-      date: new Date(item.date).toISOString().split('T')[0], // Formatting the date as YYYY-MM-DD
+      date: new Date(item.date).toISOString().split('T')[0], // Formatting date
     }));
 
     var csv = unparse({
