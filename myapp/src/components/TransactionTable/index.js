@@ -42,6 +42,7 @@ function TransactionTable({ transactions }) {
       item.type.includes(typeFilter)
   );
 
+  function importCSV() {}
   function exportCSV() {
     const formattedData = transactions.map((item) => ({
       ...item,
