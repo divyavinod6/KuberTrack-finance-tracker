@@ -53,24 +53,24 @@ function Dashboard() {
     addTransaction(newTransaction);
   };
 
-  async function addTransaction(newTransaction) {
+  async function addTransaction(transaction, many) {
     try {
       const docRef = await addDoc(
         collection(db, `users/${user.uid}/transaction`),
-        newTransaction
+        transaction
       );
       console.log('document written with ID: ', docRef.id);
-      toast.success('Transaction Added!');
+      if (!many) toast.success('Transaction Added!');
       // Update the transaction state with the new transaction
-      setTransaction((prevTransactions) => {
-        const updatedTransactions = [...prevTransactions, newTransaction];
-        calculateBalance(updatedTransactions); // Update balance with the latest transactions
-        return updatedTransactions;
-      });
-      // let newArr = transaction;
-      // newArr.push(transaction);
-      // setTransaction(newArr);
-      // calculateBalance();
+      // setTransaction((prevTransactions) => {
+      //   const updatedTransactions = [...prevTransactions, transaction];
+      //   calculateBalance(updatedTransactions); // Update balance with the latest transactions
+      //   return updatedTransactions;
+      // });
+      let newArr = transactions;
+      newArr.push(transaction);
+      setTransaction(newArr);
+      calculateBalance();
     } catch (error) {
       console.error('Error adding document: ', error);
       toast.error('Couldnt add Transaction');
@@ -147,7 +147,10 @@ function Dashboard() {
             handleIncomeCancel={handleIncomeCancel}
             onFinish={onFinish}
           />
-          <TransactionTable transactions={transaction} />
+          <TransactionTable
+            transactions={transactions}
+            addTransaction={addTransaction}
+          />
         </>
       )}
     </div>

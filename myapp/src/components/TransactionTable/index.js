@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Flex, Radio, Select, Table } from 'antd';
 import searchImg from '../../assets/search.svg';
-import { unparse } from 'papaparse';
+import { parse, unparse } from 'papaparse';
+import { toast } from 'react-toastify';
 
 function TransactionTable({ transactions }) {
   const [search, setSearch] = useState('');
@@ -42,7 +43,22 @@ function TransactionTable({ transactions }) {
       item.type.includes(typeFilter)
   );
 
-  function importCSV() {}
+  function importCSV(event) {
+    event.preventDefault();
+    try {
+      parse(event.target.files[0], {
+        header: true,
+        complete: async function (results) {
+          console.log('RESULTS>>>>', results);
+        },
+      });
+      // toast.success("All Transactions Added");
+      // fetchTransaction();
+      event.target.files = null;
+    } catch (e) {
+      // toast.error(e.message)
+    }
+  }
   function exportCSV() {
     const formattedData = transactions.map((item) => ({
       ...item,
@@ -153,6 +169,7 @@ function TransactionTable({ transactions }) {
               type="file"
               accept=".csv"
               required
+              onChange={importCSV}
               style={{ display: 'none' }}
             />
           </div>
