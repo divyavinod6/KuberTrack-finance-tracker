@@ -78,6 +78,7 @@ function TransactionTable({ transactions }) {
     link.click();
     document.body.removeChild(link);
   }
+  function importFromCSV(event) {}
 
   let sortedTransactions = filteredTransactions.sort((a, b) => {
     if (sortKey === 'date') {
