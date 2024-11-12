@@ -4,7 +4,7 @@ import searchImg from '../../assets/search.svg';
 import { parse, unparse } from 'papaparse';
 import { toast } from 'react-toastify';
 
-function TransactionTable({ transactions }) {
+function TransactionTable({ transactions, addTransaction }) {
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
   const [sortKey, setSortKey] = useState('');
@@ -50,6 +50,16 @@ function TransactionTable({ transactions }) {
         header: true,
         complete: async function (results) {
           console.log('RESULTS>>>>', results);
+
+          for (const transaction of results.data) {
+            // write each transaction to firebase
+            console.log('Transaction: ', transaction);
+            const newTransaction = {
+              ...transaction,
+              amount: parseFloat(transaction.amount),
+            };
+            await addTransaction(newTransaction, true);
+          }
         },
       });
       // toast.success("All Transactions Added");
@@ -78,8 +88,8 @@ function TransactionTable({ transactions }) {
     link.click();
     document.body.removeChild(link);
   }
-  function importFromCSV(event) {}
 
+  function importFromCSV() {}
   let sortedTransactions = filteredTransactions.sort((a, b) => {
     if (sortKey === 'date') {
       return new Date(a.Date) - new Date(b.date);
