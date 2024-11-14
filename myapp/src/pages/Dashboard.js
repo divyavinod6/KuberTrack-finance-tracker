@@ -67,7 +67,7 @@ function Dashboard() {
       //   calculateBalance(updatedTransactions); // Update balance with the latest transactions
       //   return updatedTransactions;
       // });
-      let newArr = transactions;
+      let newArr = transaction;
       newArr.push(transaction);
       setTransaction(newArr);
       calculateBalance();
@@ -148,7 +148,7 @@ function Dashboard() {
             onFinish={onFinish}
           />
           <TransactionTable
-            transactions={transactions}
+            transaction={transaction}
             addTransaction={addTransaction}
           />
         </>
