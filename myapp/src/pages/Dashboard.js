@@ -73,6 +73,7 @@ function Dashboard() {
       calculateBalance();
     } catch (error) {
       console.error('Error adding document: ', error);
+      //if(!many) toast.error("Couldn't add transaction");
       toast.error('Couldnt add Transaction');
     }
   }

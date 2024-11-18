@@ -4,7 +4,7 @@ import searchImg from '../../assets/search.svg';
 import { parse, unparse } from 'papaparse';
 import { toast } from 'react-toastify';
 
-function TransactionTable({ transactions, addTransaction }) {
+function TransactionTable({ transaction, addTransaction }) {
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
   const [sortKey, setSortKey] = useState('');
@@ -37,7 +37,8 @@ function TransactionTable({ transactions, addTransaction }) {
     },
   ];
 
-  let filteredTransactions = transactions.filter(
+  // error
+  let filteredTransaction = transaction.filter(
     (item) =>
       item.name.toLowerCase().includes(search.toLowerCase()) &&
       item.type.includes(typeFilter)
@@ -70,7 +71,7 @@ function TransactionTable({ transactions, addTransaction }) {
     }
   }
   function exportCSV() {
-    const formattedData = transactions.map((item) => ({
+    const formattedData = transaction.map((item) => ({
       ...item,
       date: new Date(item.date).toISOString().split('T')[0], // Formatting date
     }));
@@ -90,7 +91,7 @@ function TransactionTable({ transactions, addTransaction }) {
   }
 
   function importFromCSV() {}
-  let sortedTransactions = filteredTransactions.sort((a, b) => {
+  let sortedTransaction = filteredTransaction.sort((a, b) => {
     if (sortKey === 'date') {
       return new Date(a.Date) - new Date(b.date);
     } else if (sortKey === 'amount') {
@@ -185,7 +186,7 @@ function TransactionTable({ transactions, addTransaction }) {
             />
           </div>
         </div>
-        <Table dataSource={sortedTransactions} columns={columns} />;
+        <Table dataSource={sortedTransaction} columns={columns} />;
       </div>
     </div>
   );
