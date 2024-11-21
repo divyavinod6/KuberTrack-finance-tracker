@@ -50,7 +50,7 @@ function TransactionTable({ transaction, addTransaction }) {
       parse(event.target.files[0], {
         header: true,
         complete: async function (results) {
-          console.log('RESULTS>>>>', results);
+          console.log('RESULTS >>>>>', results);
 
           for (const transaction of results.data) {
             // write each transaction to firebase
