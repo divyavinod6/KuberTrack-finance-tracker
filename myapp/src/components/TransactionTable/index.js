@@ -37,7 +37,7 @@ function TransactionTable({ transaction, addTransaction }) {
     },
   ];
 
-  // error
+  // error solve here
   let filteredTransaction = transaction.filter(
     (item) =>
       item.name.toLowerCase().includes(search.toLowerCase()) &&
