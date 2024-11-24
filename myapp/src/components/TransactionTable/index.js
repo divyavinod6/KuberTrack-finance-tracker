@@ -4,7 +4,7 @@ import searchImg from '../../assets/search.svg';
 import { parse, unparse } from 'papaparse';
 import { toast } from 'react-toastify';
 
-function TransactionTable({ transaction, addTransaction }) {
+function TransactionTable({ transactions, addTransaction, fetchTransactions }) {
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
   const [sortKey, setSortKey] = useState('');
@@ -38,40 +38,24 @@ function TransactionTable({ transaction, addTransaction }) {
   ];
 
   // error solve here
-  let filteredTransaction = transaction.filter(
+  let filteredTransactions = transactions.filter(
     (item) =>
       item.name.toLowerCase().includes(search.toLowerCase()) &&
       item.type.includes(typeFilter)
   );
 
-  function importCSV(event) {
-    event.preventDefault();
-    try {
-      parse(event.target.files[0], {
-        header: true,
-        complete: async function (results) {
-          console.log('RESULTS >>>>>', results);
-
-          for (const transaction of results.data) {
-            // write each transaction to firebase
-            console.log('Transaction: ', transaction);
-            const newTransaction = {
-              ...transaction,
-              amount: parseFloat(transaction.amount),
-            };
-            await addTransaction(newTransaction, true);
-          }
-        },
-      });
-      // toast.success("All Transactions Added");
-      // fetchTransaction();
-      event.target.files = null;
-    } catch (e) {
-      // toast.error(e.message)
+  let sortedTransactions = filteredTransactions.sort((a, b) => {
+    if (sortKey === 'date') {
+      return new Date(a.Date) - new Date(b.date);
+    } else if (sortKey === 'amount') {
+      return a.amount - b.amount;
+    } else {
+      return 0;
     }
-  }
+  });
+
   function exportCSV() {
-    const formattedData = transaction.map((item) => ({
+    const formattedData = transactions.map((item) => ({
       ...item,
       date: new Date(item.date).toISOString().split('T')[0], // Formatting date
     }));
@@ -90,16 +74,33 @@ function TransactionTable({ transaction, addTransaction }) {
     document.body.removeChild(link);
   }
 
-  function importFromCSV() {}
-  let sortedTransaction = filteredTransaction.sort((a, b) => {
-    if (sortKey === 'date') {
-      return new Date(a.Date) - new Date(b.date);
-    } else if (sortKey === 'amount') {
-      return a.amount - b.amount;
-    } else {
-      return 0;
+  function importCSV(event) {
+    event.preventDefault();
+    try {
+      parse(event.target.files[0], {
+        header: true,
+        complete: async function (results) {
+          console.log('RESULTS >>>>>', results);
+
+          for (const transaction of results.data) {
+            // write each transaction to firebase
+            console.log('Transactions: ', transaction);
+            const newTransaction = {
+              ...transaction,
+              amount: parseFloat(transaction.amount),
+            };
+            await addTransaction(newTransaction, true);
+          }
+        },
+      });
+      toast.success('All Transactions Added');
+      fetchTransactions();
+      event.target.files = null;
+    } catch (e) {
+      toast.error(e.message);
     }
-  });
+  }
+
   return (
     <div style={{ width: '97%', padding: '0rem 2rem' }}>
       <div
@@ -186,7 +187,7 @@ function TransactionTable({ transaction, addTransaction }) {
             />
           </div>
         </div>
-        <Table dataSource={sortedTransaction} columns={columns} />;
+        <Table dataSource={sortedTransactions} columns={columns} />;
       </div>
     </div>
   );

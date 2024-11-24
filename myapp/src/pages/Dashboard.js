@@ -50,6 +50,7 @@ function Dashboard() {
       tag: values.tag,
       name: values.name,
     };
+    console.log('New Transaction', newTransaction);
     addTransaction(newTransaction);
   };
 
@@ -67,7 +68,7 @@ function Dashboard() {
       //   calculateBalance(updatedTransactions); // Update balance with the latest transactions
       //   return updatedTransactions;
       // });
-      let newArr = transaction;
+      let newArr = transactions;
       newArr.push(transaction);
       setTransaction(newArr);
       calculateBalance();
@@ -80,19 +81,19 @@ function Dashboard() {
   useEffect(() => {
     // GET all doc from a collection
     if (user) {
-      fetchTransaction();
+      fetchTransactions();
     }
   }, [user]);
 
   useEffect(() => {
     calculateBalance(transaction);
-  }, [transaction]);
+  }, [transactions]);
 
   const calculateBalance = (transaction) => {
     let incomeTotal = 0;
     let expensesTotal = 0;
 
-    transaction.forEach((transaction) => {
+    transactions.forEach((transaction) => {
       if (transaction.type === 'income') {
         incomeTotal += transaction.amount;
       } else {
@@ -149,7 +150,7 @@ function Dashboard() {
             onFinish={onFinish}
           />
           <TransactionTable
-            transaction={transaction}
+            transactions={transactions}
             addTransaction={addTransaction}
           />
         </>
