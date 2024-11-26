@@ -3,9 +3,11 @@ import { Flex, Radio, Select, Table } from 'antd';
 import searchImg from '../../assets/search.svg';
 import { parse, unparse } from 'papaparse';
 import { toast } from 'react-toastify';
+import { type } from '@testing-library/user-event/dist/type';
 
 function TransactionTable({ transactions, addTransaction, fetchTransactions }) {
-  const [search, setSearch] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedTag, setSelectedTag] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
   const [sortKey, setSortKey] = useState('');
   const { Option } = Select;
@@ -38,13 +40,25 @@ function TransactionTable({ transactions, addTransaction, fetchTransactions }) {
   ];
 
   // error solve here
-  let filteredTransactions = transactions.filter(
+
+  let filteredTransactions = (transactions || []).filter(
     (item) =>
-      item.name.toLowerCase().includes(search.toLowerCase()) &&
-      item.type.includes(typeFilter)
+      item.name?.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      item.type?.includes(typeFilter)
   );
 
-  let sortedTransactions = filteredTransactions.sort((a, b) => {
+  /*
+  const filteredTransactions = transactions.filter((transaction) => {
+    const searchMatch = searchTerm
+      ? transaction.name.toLowerCase().includes(searchTerm.toLowerCase())
+      : true;
+    const tagMatch = selectedTag ? transaction.tag === selectedTag : true;
+    const typeMatch = typeFilter ? transaction.type === typeFilter : true;
+
+    return searchMatch && tagMatch && typeMatch;
+  });
+  */
+  let sortedTransactions = [...filteredTransactions].sort((a, b) => {
     if (sortKey === 'date') {
       return new Date(a.Date) - new Date(b.date);
     } else if (sortKey === 'amount') {
@@ -115,13 +129,13 @@ function TransactionTable({ transactions, addTransaction, fetchTransactions }) {
         <div className="input-flex">
           <img src={searchImg} width="16" />
           <input
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search by name"
           />
           <input
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search by name"
           />
         </div>

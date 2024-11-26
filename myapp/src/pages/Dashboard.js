@@ -4,24 +4,18 @@ import Cards from '../components/Cards';
 import AddIncomeModal from '../components/Modals/addIncome';
 import AddExpenseModal from '../components/Modals/addExpense';
 import TransactionTable from '../components/TransactionTable';
-import {
-  addDoc,
-  collection,
-  query,
-  getDocs,
-  Transaction,
-} from 'firebase/firestore';
+import { addDoc, collection, query, getDocs } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 import { auth, db } from '../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 // import moment from 'moment';
 
 function Dashboard() {
-  const [transaction, setTransaction] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [user] = useAuthState(auth);
   const [isExpenseModalVisible, setIsExpenseModalVisible] = useState(false);
   const [isIncomeModalVisible, setIsIncomeModalVisible] = useState(false);
+  const [transactions, setTransactions] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [user] = useAuthState(auth);
   const [income, setIncome] = useState(0);
   const [expense, setExpense] = useState(0);
   const [totalBalance, setTotalBalance] = useState(0);
@@ -70,7 +64,7 @@ function Dashboard() {
       // });
       let newArr = transactions;
       newArr.push(transaction);
-      setTransaction(newArr);
+      setTransactions(newArr);
       calculateBalance();
     } catch (error) {
       console.error('Error adding document: ', error);
@@ -78,6 +72,7 @@ function Dashboard() {
       toast.error('Couldnt add Transaction');
     }
   }
+
   useEffect(() => {
     // GET all doc from a collection
     if (user) {
@@ -86,10 +81,10 @@ function Dashboard() {
   }, [user]);
 
   useEffect(() => {
-    calculateBalance(transaction);
+    calculateBalance();
   }, [transactions]);
 
-  const calculateBalance = (transaction) => {
+  const calculateBalance = () => {
     let incomeTotal = 0;
     let expensesTotal = 0;
 
@@ -105,7 +100,8 @@ function Dashboard() {
     setExpense(expensesTotal);
     setTotalBalance(incomeTotal - expensesTotal);
   };
-  async function fetchTransaction() {
+
+  async function fetchTransactions() {
     setLoading(true);
     if (user) {
       const q = query(collection(db, `users/${user.uid}/transaction`));
@@ -115,8 +111,8 @@ function Dashboard() {
         // doc.data() is never undefined for query doc snapshots
         transactionsArray.push(doc.data());
       });
-      if (JSON.stringify(transactionsArray) !== JSON.stringify(transaction)) {
-        setTransaction(transactionsArray);
+      if (JSON.stringify(transactionsArray) !== JSON.stringify(transactions)) {
+        setTransactions(transactionsArray);
         console.log('Transaction value: ', transactionsArray);
         toast.success('Transaction Fetched!!');
       }
@@ -152,6 +148,7 @@ function Dashboard() {
           <TransactionTable
             transactions={transactions}
             addTransaction={addTransaction}
+            fetchTransactions={fetchTransactions}
           />
         </>
       )}
