@@ -71,7 +71,7 @@ function TransactionTable({ transactions, addTransaction, fetchTransactions }) {
   function exportCSV() {
     const formattedData = transactions.map((item) => ({
       ...item,
-      date: new Date(item.date).toISOString().split('T')[0], // Formatting date
+      date: new Date(item.date).toISOString().split('T')[0], // Formatting dates
     }));
 
     var csv = unparse({
