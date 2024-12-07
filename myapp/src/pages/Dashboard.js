@@ -89,13 +89,16 @@ function Dashboard() {
     let expensesTotal = 0;
 
     transactions.forEach((transaction) => {
-      if (transaction.type === 'income') {
-        incomeTotal += transaction.amount;
-      } else {
-        expensesTotal += transaction.amount;
+      const amount = parseFloat(transaction.amount);
+      if (!isNaN(amount)) {
+        if (transaction.type === 'income') {
+          incomeTotal += amount;
+        } else if (transaction.type === 'expense') {
+          expensesTotal += amount;
+        }
       }
     });
-    //
+
     setIncome(incomeTotal);
     setExpense(expensesTotal);
     setTotalBalance(incomeTotal - expensesTotal);
