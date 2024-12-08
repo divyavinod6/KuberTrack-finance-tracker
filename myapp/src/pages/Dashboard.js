@@ -111,7 +111,7 @@ function Dashboard() {
       const querySnapshot = await getDocs(q);
       let transactionsArray = [];
       querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
+        // doc.data() is never undefined for query doc snapshot
         transactionsArray.push(doc.data());
       });
       if (JSON.stringify(transactionsArray) !== JSON.stringify(transactions)) {
