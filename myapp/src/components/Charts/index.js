@@ -21,9 +21,15 @@ function ChartsComponent() {
       },
     },
   };
+  let chart;
   return (
     <div>
-      {/* <Line {...config} onReady={(chartInstance) => (chart = chartInstance)} /> */}
+      {
+        <Line
+          {...config}
+          onReady={(chartInstance) => (chart = chartInstance)}
+        />
+      }
     </div>
   );
 }

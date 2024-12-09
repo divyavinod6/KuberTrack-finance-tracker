@@ -8,6 +8,8 @@ import { addDoc, collection, query, getDocs } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 import { auth, db } from '../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import ChartsComponent from '../components/Charts';
+import NoTransactions from '../components/NoTransactions';
 // import moment from 'moment';
 
 function Dashboard() {
@@ -138,6 +140,7 @@ function Dashboard() {
             showExpenseModal={showExpenseModal}
             showIncomeModal={showIncomeModal}
           />
+          {transactions.length != 0 ? <ChartsComponent /> : <NoTransactions />}
           <AddExpenseModal
             isExpenseModalVisible={isExpenseModalVisible}
             handleExpenseCancel={handleExpenseCancel}
