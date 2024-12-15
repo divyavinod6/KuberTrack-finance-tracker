@@ -13,7 +13,7 @@ function ChartsComponent() {
     yField: 'value',
     point: {
       size: 5,
-      shape: 'daimond',
+      shape: 'diamond',
     },
     label: {
       style: {
