@@ -56,7 +56,7 @@ function TransactionTable({ transactions, addTransaction, fetchTransactions }) {
     const typeMatch = typeFilter ? transaction.type === typeFilter : true;
 
     return searchMatch && tagMatch && typeMatch
-  });
+  })
   */
   let sortedTransactions = [...filteredTransactions].sort((a, b) => {
     if (sortKey === 'date') {
