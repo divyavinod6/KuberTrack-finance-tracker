@@ -126,6 +126,10 @@ function Dashboard() {
     }
     setLoading(false);
   }
+
+  let sortedTransactions = transactions.sort((a, b) => {
+    return new Date(a.date) - new Date(b.data);
+  });
   return (
     <div>
       <Header />
@@ -140,7 +144,11 @@ function Dashboard() {
             showExpenseModal={showExpenseModal}
             showIncomeModal={showIncomeModal}
           />
-          {transactions.length != 0 ? <ChartsComponent /> : <NoTransactions />}
+          {transactions != [] ? (
+            <ChartsComponent sortedTransactions={sortedTransactions} />
+          ) : (
+            <NoTransactions />
+          )}
           <AddExpenseModal
             isExpenseModalVisible={isExpenseModalVisible}
             handleExpenseCancel={handleExpenseCancel}
