@@ -12,6 +12,7 @@ function Header() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log('User in Header:', user); // Debug the user object
     if (user) {
       navigate('/dashboard');
     }
