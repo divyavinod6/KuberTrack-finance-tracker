@@ -2,7 +2,7 @@
 
 ## tech stack :- react firebase hooks,firebase, ant design and dashboard
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). It also includes charts build using ant design.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). It also includes charts to analyze your finances, build using ant design.
 
 ## Available Scripts
 
