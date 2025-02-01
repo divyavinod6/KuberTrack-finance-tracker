@@ -12,7 +12,11 @@ function NoTransactions() {
         marginBottom: '2rem',
       }}
     >
-      <img src={transactions} style={{ width: '400px', margin: '4rem' }} />
+      <img
+        src={transactions}
+        alt="Add Transactions"
+        style={{ width: '400px', margin: '4rem' }}
+      />
       <p style={{ textAlign: 'center', fontSize: '1.2rem' }}>
         You have No Transactions Currently
       </p>

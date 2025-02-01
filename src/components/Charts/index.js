@@ -1,15 +1,23 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Line, Pie } from '@ant-design/charts';
 
 function ChartsComponent({ sortedTransactions }) {
+  const lineChartRef = useRef(null);
+  const pieChartRef = useRef(null);
+
   const data = sortedTransactions.map((item) => {
-    return { date: item.date, amount: item.amount };
+    return {
+      date: item.date,
+      amount: item.amount,
+    };
   });
-  const spendingData = sortedTransactions.filter((transaction) => {
-    if (transaction.type == 'expense') {
-      return { tag: transaction.tag, amount: transaction.amount };
-    }
-  });
+
+  const spendingData = sortedTransactions
+    .filter((transaction) => transaction.type === 'expense')
+    .map((transaction) => ({
+      tag: transaction.tag,
+      amount: transaction.amount,
+    }));
 
   let finalSpendings = spendingData.reduce((acc, obj) => {
     let key = obj.tag;
@@ -35,22 +43,21 @@ function ChartsComponent({ sortedTransactions }) {
     angleField: 'amount',
     colorField: 'tag',
   };
-  let chart;
-  let pieChart;
+
   return (
     <div className="charts-wrapper">
       <div>
         <h2 style={{ marginTop: 0 }}>Your Analytics</h2>
         <Line
           {...config}
-          onReady={(chartInstance) => (chart = chartInstance)}
+          onReady={(chartInstance) => (lineChartRef.current = chartInstance)}
         />
       </div>
       <div>
         <h2 style={{ marginTop: 0 }}>Your Spendings</h2>
         <Pie
           {...spendingConfig}
-          onReady={(chartInstance) => (pieChart = chartInstance)}
+          onReady={(chartInstance) => (pieChartRef.current = chartInstance)}
         />
       </div>
     </div>

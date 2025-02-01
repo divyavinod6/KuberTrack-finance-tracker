@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { Flex, Radio, Select, Table } from 'antd';
+import { Radio, Select, Table } from 'antd';
 import searchImg from '../../assets/search.svg';
 import { parse, unparse } from 'papaparse';
 import { toast } from 'react-toastify';
-import { type } from '@testing-library/user-event/dist/type';
 
 function TransactionTable({ transactions, addTransaction, fetchTransactions }) {
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedTag, setSelectedTag] = useState('');
+  //const [selectedTag, setSelectedTag] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
   const [sortKey, setSortKey] = useState('');
   const { Option } = Select;
@@ -127,7 +126,7 @@ function TransactionTable({ transactions, addTransaction, fetchTransactions }) {
         }}
       >
         <div className="input-flex">
-          <img src={searchImg} width="16" />
+          <img src={searchImg} alt="Search" width="16" />
           <input
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
